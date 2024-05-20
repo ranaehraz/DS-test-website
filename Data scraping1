@@ -1,0 +1,34 @@
+import pandas as pd
+import numpy as np
+import requests
+from bs4 import BeautifulSoup
+import re
+url = 'https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops'
+soup = BeautifulSoup(r.text, 'lxml')
+titles = soup.find_all('a', {'class': 'title'})
+product_name = []
+for i in titles:
+    name = i.text
+    product_name.append(name)
+# product_name
+desc = soup.find_all('p', {'class':'description card-text'})
+desc_list = []
+for i in desc:
+    des = i.text
+    desc_list.append(des)
+# desc_list
+prices = soup.find_all('h4', {'class':'price float-end card-title pull-right'})
+price_list = []
+for i in prices:
+    price = i.text
+    price_list.append(price)
+# price_list
+reviews = soup.find_all('p', {'class': 'review-count float-end'})
+reviews_list = []
+for i in reviews:
+    review = i.text
+    reviews_list.append(review)
+# reviews_list
+df = pd.DataFrame({'Product Title':product_name, 'Product Description':desc_list, 'Sell Price':price_list,
+                   'Reviews':reviews_list})
+df.to_csv('Web scraping.csv', index = False)
